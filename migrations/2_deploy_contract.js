@@ -1,4 +1,4 @@
-var SocialNetwork = artifacts.require("./SocialNetwork.sol");
+const SocialNetwork = artifacts.require("SocialNetwork");
 
 module.exports = function(deployer) {
   deployer.deploy(SocialNetwork);
