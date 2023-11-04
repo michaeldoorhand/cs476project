@@ -30,6 +30,7 @@ contract SocialNetwork {
     );
 
     struct Demographic {
+        uint id;
         string firstName;
         string lastName;
         string dateOfBirth;
@@ -40,6 +41,7 @@ contract SocialNetwork {
     }
 
     event DemographicCreated(
+        uint id,
         string firstName,
         string lastName,
         string dateOfBirth,
@@ -79,8 +81,8 @@ contract SocialNetwork {
         // Increment the post count
         demographicCount ++;
         // Create the post
-        demographics[demographicCount] = Demographic(_firstName, _lastName, _dateOfBirth, _height, _weight, _bloodType, msg.sender);
-        emit DemographicCreated(_firstName, _lastName, _dateOfBirth, _height, _weight, _bloodType, msg.sender);
+        demographics[demographicCount] = Demographic(demographicCount, _firstName, _lastName, _dateOfBirth, _height, _weight, _bloodType, msg.sender);
+        emit DemographicCreated(demographicCount, _firstName, _lastName, _dateOfBirth, _height, _weight, _bloodType, msg.sender);
 
     }
 

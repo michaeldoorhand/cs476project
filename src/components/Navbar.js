@@ -16,10 +16,16 @@ class Navbar extends Component {
           >
             Care Chain
           </a>
-                <Link to="/add"> {/* Wrap the button in the Link component */}
-                    <button type='button' className='btn btn-primary'>Actions</button>
+                <Link to="/add"> 
+                    <button type='button' className='btn btn-primary'>Add</button>
                 </Link>
-                <Link to="/"> {/* Wrap the button in the Link component */}
+                <Link to="/view"> 
+                    <button type='button' className='btn btn-primary'>View</button>
+                </Link>
+                <Link to="/share"> 
+                    <button type='button' className='btn btn-primary'>Share</button>
+                </Link>
+                <Link to="/"> 
                     <button type='button' className='btn btn-primary'>Home</button>
                 </Link>
           <ul className='navbar-nav px-3'>
