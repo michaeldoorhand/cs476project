@@ -1,1 +1,133 @@
-/* Styles go here */
+.container1 {
+    display: flex;
+    width: 100%;
+    max-width: 100%; /* Limit the container width to the screen width */
+    overflow: hidden; 
+  }
+  
+  .header-1 {
+    font-size: 72px;
+  }
+  
+  .header-2 {
+    font-size: 48px;
+  }
+  .text-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .container2 {
+    display: flex;
+    background-color: black;
+  }
+
+  .main-row{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding: 1%;
+    gap: 2%;
+  }
+
+  .box {
+    background-color: #8c92eb;
+    display: flex;
+    flex-direction: column;
+    width: 20%;
+    height: 38vh;
+  }
+
+  .box-text {
+    margin: 4%;
+    font-size: 38px;
+    font-weight: 600;
+  }
+
+  .button-box {
+    margin-top: auto; 
+    margin-left: auto; 
+    padding: 8%;
+  }
+
+.link-button {
+  width: 200px;
+  border: none;
+  padding: 10px;
+  background-color: #3498db; /* Change the background color as desired */
+  color: white;
+  font-size: 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+.padding-1 {
+    margin-left: 5%;
+}
+
+.art-box {
+    max-width: 100%; /* Set a maximum width */
+    overflow: hidden; /* Hide overflow if the image exceeds the container size */
+    margin: 0 auto; /* Center the container horizontally */
+    padding-top: 3%;
+}
+
+.art2 {
+    width: 100%; /* Ensure the image takes the full width of the container */
+    height: auto; /* Maintain the aspect ratio */
+    display: block; /* Remove any default inline spacing */
+}
+
+.footer {
+    display: flex;
+    height: 80px;
+    width: auto;
+    background-color: #3F48CC;
+    padding: 1%;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.footer2 {
+    display: flex;
+    height: 80px;
+    width: auto;
+    background-color: #3F48CC;
+    padding: 1%;
+    margin-top: 2%;
+    flex-direction: row;
+    justify-content: center;
+}
+
+
+.footer-txt{
+    font-size: x-large;
+}
+
+.add-container{
+    display: flex;
+    background-color: white;
+    justify-content: center;
+    padding-top: 6%;
+}
+
+.add-row{
+    background-color: #8c92eb;
+    padding-bottom: 1%;
+}
+
+.add-title{
+    font-size: 32px;
+    margin: 2%;
+}
+
+.submit-button {
+    width: 200px;
+    border: none;
+    padding: 10px;
+    background-color: #3498db; /* Change the background color as desired */
+    color: white;
+    font-size: 16px;
+    position: relative;
+    overflow: hidden;
+  }

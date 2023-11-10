@@ -5,6 +5,10 @@ import './App.css';
 import SocialNetwork from '../abis/SocialNetwork.json'
 import Navbar from './Navbar'
 import Main from './Main'
+import art1 from '../images/art1.png';
+import art2 from '../images/art2.jpg';
+import { Link } from 'react-router-dom'; 
+
 
 class App extends Component {
 
@@ -89,15 +93,46 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Navbar account={this.state.account} />
-        { this.state.loading
-          ? <div id="loader" className="text-center mt-5"><p>Loading...</p></div>
-          : <Main
-              posts={this.state.posts}
-              createPost={this.createPost}
-              tipPost={this.tipPost}
-            />
-        }
+         <Navbar account={this.state.account} />
+        <div className='art-box'>
+            <img src={art1} alt="Art 1" className='art1' />
+        </div>
+       <div className='text-container'>
+          <div className='header-1'>
+              Care Chain
+          </div>
+          <div className='header-2'>
+            Solving healthcare interoperability one chain at a time!
+          </div>
+        </div>
+        <div className='main-row'>
+          <div className='box'>
+            <div className='box-text'> Add Chain</div>
+            <Link to="/add" className="button-box"> 
+                <button type='button' className='link-button'>Add</button>
+            </Link>
+          </div>
+          <div className='box'>
+            <div className='box-text'> View Chain</div>
+            <Link to="/view" className="button-box"> 
+              <button type='button' className='link-button'>View</button>
+            </Link>
+          </div>
+          <div className='box'>
+           <div className='box-text'> Share Chain</div>
+           <Link to="/share" className="button-box"> 
+              <button type='button' className='link-button'>Share</button>
+          </Link>
+          </div>
+        </div>
+        <div className='art-box'>
+            <img src={art2} alt="Art 1" className='art2' />
+        </div>
+        <div className='footer'> 
+          <div className='footer-txt'>Be sure to follow us on social media! @CareChain</div>
+          
+        </div>
+
       </div>
     );
   }

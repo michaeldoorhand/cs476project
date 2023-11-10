@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Identicon from 'identicon.js';
+import art1 from '../images/art1.png';
 
 class Main extends Component {
 
