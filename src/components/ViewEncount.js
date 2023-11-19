@@ -5,11 +5,8 @@ import './App.css';
 import SocialNetwork from '../abis/SocialNetwork.json'
 import Navbar from './Navbar'
 import Main from './Main'
-import ViewDemo from './ViewDemo';
-import ViewAppoint from './ViewAppoint';
-import ViewEncount from './ViewEncount';
 
-class View extends Component {
+class ViewEncount extends Component {
 
   async componentWillMount() {
     await this.loadWeb3()
@@ -41,36 +38,13 @@ class View extends Component {
       const socialNetwork = web3.eth.Contract(SocialNetwork.abi, networkData.address)
       this.setState({ socialNetwork })
       const demographicCount = await socialNetwork.methods.demographicCount().call()
-      const appointmentCount = await socialNetwork.methods.appointmentCount().call()
-      const encounterCount = await socialNetwork.methods.encounterCount().call()
-
       this.setState({ demographicCount })
-      // Load Demographics
+      // Load Posts
       for (var i = 1; i <= demographicCount; i++) {
-        const demo = await socialNetwork.methods.demographics(i).call()
-        if(demo.author === this.state.account) {
-          this.setState({
-            demographics: [...this.state.demographics, demo]
-          })
-        }
-      }
-      // Load Appointments
-      for (var i = 1; i <= appointmentCount; i++) {
-        const appt = await socialNetwork.methods.appointments(i).call()
-        if(appt.author === this.state.account) {
-          this.setState({
-            appointments: [...this.state.appointments, appt]
-          })
-        }
-      }
-      // Load Encounters
-      for (var i = 1; i <= encounterCount; i++) {
-        const enct = await socialNetwork.methods.encounters(i).call()
-        if(enct.author === this.state.account) {
-          this.setState({
-            encounters: [...this.state.encounters, enct]
-          })
-        }
+        const post = await socialNetwork.methods.demographics(i).call()
+        this.setState({
+          posts: [...this.state.posts, post]
+        })
       }
       // Sort posts. Show highest tipped posts first
       this.setState({ loading: false})
@@ -121,8 +95,6 @@ class View extends Component {
     })
   }
 
-
-
   constructor(props) {
     super(props)
     this.state = {
@@ -130,9 +102,6 @@ class View extends Component {
       socialNetwork: null,
       postCount: 0,
       posts: [],
-      demographics: [],
-      appointments: [],
-      encounters: [],
       displayDemographic: false,
       loading: true,
       formData: {
@@ -151,6 +120,7 @@ class View extends Component {
 
   handleInputChange = (event, inputName) => {
     const value = event.target.value;
+    
     this.setState(prevState => ({
         formData: {
             ...prevState.formData,
@@ -159,22 +129,63 @@ class View extends Component {
     }));
     };
 
-  render() {
-    return (
-      <div>
-        
-        {console.log(this.state.encounters)}
-        
-        <Navbar account={this.state.account} />
-        <div className='header-padding'></div>
-        <div>
-          <ViewDemo posts={this.state.demographics} />
-          <ViewAppoint posts={this.state.appointments}/>
-          <ViewEncount posts={this.state.encounters}/>
-        </div>
-      </div>
-    );
-  }
-}
+    handleToggle = () => {
+        this.setState((prevState) => ({
+          displayDemographic: !prevState.displayDemographic,
+        }));
+      };
 
-export default View;
+    render() {
+        const { posts } = this.props;
+        return (
+          <div className='view-container'>
+            {this.state.loading ? (
+              <div> loading </div>
+            ) : (
+              <div className='record-subsection'>
+                
+                    <button onClick={this.handleToggle}>
+                    {this.state.displayDemographic ? 'Hide' : 'Show'} Encounters
+                    </button>
+                
+    
+                {this.state.displayDemographic && (
+                  <div className='record-subsection'>
+                    {posts.map((post, key) => (
+                      <div className='record-box' key={key}>
+                        <div className='data-pair'>
+                      <label className='label-text'>Date</label>
+                      <div className='data-text'>{post.date}</div>
+                    </div>
+                    <div className='data-pair'>
+                      <label className='label-text'>Location</label>
+                      <div className='data-text'>{post.location}</div>
+                    </div>
+                    <div className='data-pair'>
+                      <label className='label-text'>Diagnosis</label>
+                      <div className='data-text'>{post.diagnosis}</div>
+                    </div>
+                    <div className='data-pair'>
+                      <label className='label-text'>Description</label>
+                      <div className='data-text'>{post.description}</div>
+                    </div>
+                    <div className='data-pair'>
+                      <label className='label-text'>Procedure</label>
+                      <div className='data-text'>{post.procedure}</div>
+                    </div>
+                    <div className='data-pair'>
+                      <label className='label-text'>Practitioner</label>
+                      <div className='data-text'>{post.practitioner}</div>
+                    </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        );
+      }
+    }
+
+export default ViewEncount;

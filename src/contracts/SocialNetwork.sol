@@ -1,33 +1,14 @@
-pragma solidity ^0.5.0;
+pragma solidity ^0.8.13;
 
 contract SocialNetwork {
     string public name;
-    uint public postCount = 0;
     uint public demographicCount = 0;
+    uint public appointmentCount = 0;
+    uint public encounterCount = 0;
 
-    mapping(uint => Post) public posts;
     mapping(uint => Demographic) public demographics;
-
-    struct Post {
-        uint id;
-        string content;
-        uint tipAmount;
-        address payable author;
-    }
-
-    event PostCreated(
-        uint id,
-        string content,
-        uint tipAmount,
-        address payable author
-    );
-
-    event PostTipped(
-        uint id,
-        string content,
-        uint tipAmount,
-        address payable author
-    );
+    mapping(uint => Appointment) public appointments;
+    mapping(uint => Encounter) public encounters;
 
     struct Demographic {
         uint id;
@@ -51,56 +32,86 @@ contract SocialNetwork {
         address payable author
     );
 
-    constructor() public {
-        name = "Dapp University Social Network";
+    struct Appointment {
+        uint id;
+        string date;
+        string apt_time;
+        string location;
+        string status;
+        string followup;
+        string notes;
+        address payable author;
     }
 
-    function createPost(string memory _content) public {
-        // Require valid content
-        require(bytes(_content).length > 0);
-        // Increment the post count
-        postCount ++;
-        // Create the post
-        posts[postCount] = Post(postCount, _content, 0, msg.sender);
-        // Trigger Event
-        emit PostCreated(postCount, _content, 0, msg.sender);
+    event AppointmentCreated(
+        uint id,
+        string date,
+        string apt_time,
+        string location,
+        string status,
+        string followup,
+        string notes,
+        address payable author
+    );
+
+    struct Encounter {
+        uint id;
+        string date;
+        string location;
+        string diagnosis;
+        string description;
+        string procedure;
+        string practitioner;
+        address payable author;
     }
 
-    function addDemographic(
-        string memory _firstName,
-        string memory _lastName,
-        string memory _dateOfBirth,
-        string memory _height,
-        string memory _weight,
-        string memory _bloodType
-    
+    event EncounterCreated(
+        uint id,
+        string date,
+        string location,
+        string diagnosis,
+        string description,
+        string procedure,
+        string practitioner,
+        address payable author
+    );
+
+    function addRecord(
+        string memory _field1,
+        string memory _field2,
+        string memory _field3,
+        string memory _field4,
+        string memory _field5,
+        string memory _field6,
+        uint256 _flag
     
     ) public {
         // Require valid content
-        require(bytes(_firstName).length > 0);
-        // Increment the post count
-        demographicCount ++;
-        // Create the post
-        demographics[demographicCount] = Demographic(demographicCount, _firstName, _lastName, _dateOfBirth, _height, _weight, _bloodType, msg.sender);
-        emit DemographicCreated(demographicCount, _firstName, _lastName, _dateOfBirth, _height, _weight, _bloodType, msg.sender);
+        require(bytes(_field1).length > 0);
+        
 
+        if (_flag == 1) {
+            // Increment the post count
+            demographicCount ++;
+            // Create the post
+            demographics[demographicCount] = Demographic(demographicCount, _field1, _field2, _field3, _field4, _field5, _field6, payable(msg.sender));
+            emit DemographicCreated(demographicCount, _field1, _field2, _field3, _field4, _field5, _field6, payable(msg.sender));
+        }
+        if (_flag == 2) {
+            // Increment the post count
+            appointmentCount ++;
+            // Create the post
+            appointments[appointmentCount] = Appointment(appointmentCount, _field1, _field2, _field3, _field4, _field5, _field6, payable(msg.sender));
+            emit AppointmentCreated(appointmentCount, _field1, _field2, _field3, _field4, _field5, _field6, payable(msg.sender));
+        }
+        if (_flag == 3) {
+            // Increment the post count
+            encounterCount ++;
+            // Create the post
+            encounters[encounterCount] = Encounter(encounterCount, _field1, _field2, _field3, _field4, _field5, _field6, payable(msg.sender));
+            emit EncounterCreated(encounterCount, _field1, _field2, _field3, _field4, _field5, _field6, payable(msg.sender));
+        }
+       
     }
-
-    function tipPost(uint _id) public payable {
-        // Make sure the id is valid
-        require(_id > 0 && _id <= postCount);
-        // Fetch the post
-        Post memory _post = posts[_id];
-        // Fetch the author
-        address payable _author = _post.author;
-        // Pay the author
-        address(_author).transfer(msg.value);
-        // Increment the tip amount
-        // 1 Ether = 1000000000000000000 Wei
-        _post.tipAmount = _post.tipAmount + msg.value;
-        // Update the post
-        posts[_id] = _post;
-        // Trigger an event
-        emit PostTipped(postCount, _post.content, _post.tipAmount, _author);
-    }
+    
 }

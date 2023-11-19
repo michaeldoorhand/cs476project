@@ -16,105 +16,79 @@ contract('SocialNetwork',([deployer, author, tipper]) => {
     describe('deployment', async () => {
         it('deploys successfully', async () => {
             const address = await socialNetwork.address 
-            assert.notEqual(address, 0x0)
-            assert.notEqual(address, '')
-            assert.notEqual(address, null)
-            assert.notEqual(address, undefined)
+            assert.notEqual(address, 0x0,'failed 1')
+            assert.notEqual(address, '','failed 2')
+            assert.notEqual(address, null,'failed 3')
+            assert.notEqual(address, undefined,'failed 4')
         })
 
-        it('has a name',async () => {
-            const name = await socialNetwork.name()
-            assert.equal(name, 'Dapp University Social Network')
-        })
     })
 
-    describe('demographics', () => {
+
+    describe('demographic record', () => {
         let result, demographicCount
 
         before(async ()=> {
-            result = await socialNetwork.addDemographic('Joe','Smith','2001-10-21','6ft','200lbs','A+', { from: author })
+            result = await socialNetwork.addRecord('Bob','Bakerson','2021-10-21','5ft','110lbs','A',1, { from: author })
             demographicCount = await socialNetwork.demographicCount()
         })
 
-        it('adds a demographic row to the chain',async () => {
+        it('adds a demographic record to the chain',async () => {
             // SUCCESS
-            assert.equal(demographicCount, 1)
             const event = result.logs[0].args
             assert.equal(event.id.toNumber(), demographicCount.toNumber(), 'id is correct')
-            assert.equal(event.firstName, 'Joe', 'content is correct')
-            assert.equal(event.lastName, 'Smith', 'content is correct')
-            assert.equal(event.dateOfBirth, '2001-10-21', 'content is correct')
-            assert.equal(event.height, '6ft', 'content is correct')
-            assert.equal(event.weight, '200lbs', 'content is correct')
-            assert.equal(event.bloodType, 'A+', 'content is correct')
+            assert.equal(event.firstName, 'Bob', 'content is correct')
+            assert.equal(event.lastName, 'Bakerson', 'content is correct')
+            assert.equal(event.dateOfBirth, '2021-10-21', 'content is correct')
+            assert.equal(event.height, '5ft', 'content is correct')
+            assert.equal(event.weight, '110lbs', 'content is correct')
+            assert.equal(event.bloodType, 'A', 'content is correct')
+
+        })
+    })
+
+    describe('appointment record', () => {
+        let result, appointmentCount
+
+        before(async ()=> {
+            result = await socialNetwork.addRecord('10-20-1999','2pm','Family Health Center','Completed','01-25-2001','I got a sticker',2, { from: author })
+            appointmentCount = await socialNetwork.appointmentCount()
+        })
+
+        it('adds an appointment record to the chain',async () => {
+            // SUCCESS
+            const event = result.logs[0].args
+            assert.equal(event.id.toNumber(), appointmentCount.toNumber(), 'id is correct')
+            assert.equal(event.date, '10-20-1999', 'content is correct')
+            assert.equal(event.apt_time, '2pm', 'content is correct')
+            assert.equal(event.location, 'Family Health Center', 'content is correct')
+            assert.equal(event.status, 'Completed', 'content is correct')
+            assert.equal(event.followup, '01-25-2001', 'content is correct')
+            assert.equal(event.notes, 'I got a sticker', 'content is correct')
+
+        })
+    })
+
+    describe('encounter record', () => {
+        let result, encounterCount
+
+        before(async ()=> {
+            result = await socialNetwork.addRecord('05-12-2005','St Joes Med','Sprained Ankle','Fourth foot vertebre is broken','Splint applied','Dr Smith',3, { from: author })
+            encounterCount = await socialNetwork.encounterCount()
+        })
+
+        it('adds an encounter record to the chain',async () => {
+            // SUCCESS
+            const event = result.logs[0].args
+            assert.equal(event.id.toNumber(), encounterCount.toNumber(), 'id is correct')
+            assert.equal(event.date, '05-12-2005', 'content is correct')
+            assert.equal(event.location, 'St Joes Med', 'content is correct')
+            assert.equal(event.diagnosis, 'Sprained Ankle', 'content is correct')
+            assert.equal(event.description, 'Fourth foot vertebre is broken', 'content is correct')
+            assert.equal(event.procedure, 'Splint applied', 'content is correct')
+            assert.equal(event.practitioner, 'Dr Smith', 'content is correct')
 
         })
     })
     
-
-    // describe('posts', () => {
-    //     let result, postCount
-
-    //     before(async ()=> {
-    //         result = await socialNetwork.createPost('This is my first post', { from: author })
-    //         postCount = await socialNetwork.postCount()
-    //     })
-
-    //     it('creates posts',async () => {
-    //         // SUCCESS
-    //         assert.equal(postCount, 1)
-    //         const event = result.logs[0].args
-    //         assert.equal(event.id.toNumber(), postCount.toNumber(), 'id is correct')
-    //         assert.equal(event.content, 'This is my first post', 'content is correct')
-    //         assert.equal(event.tipAmount, '0', 'Tip amount is correct')
-    //         assert.equal(event.author, author, 'Author is correct')
-
-    //         // FAILURE: Post must have content
-    //         await socialNetwork.createPost('', { from: author }).should.be.rejected;
-
-    //     })
-
-    //      it('lists posts', async () => {
-    //         const post = await socialNetwork.posts(postCount)
-    //         assert.equal(post.id.toNumber(), postCount.toNumber(), 'id is correct')
-    //         assert.equal(post.content, 'This is my first post', 'content is correct')
-    //         assert.equal(post.tipAmount, '0', 'Tip amount is correct')
-    //         assert.equal(post.author, author, 'Author is correct')
-
-    //     })
-
-    //     it('allows users to tip posts',async () => {
-    //         // Track the author balance before purchase
-    //         let oldAuthorBalance
-    //         oldAuthorBalance = await web3.eth.getBalance(author)
-    //         oldAuthorBalance = new web3.utils.BN(oldAuthorBalance)
-
-    //         result = await socialNetwork.tipPost(postCount, { from: tipper, value: web3.utils.toWei('1','Ether')})
-            
-    //         // SUCCESS
-    //         const event = result.logs[0].args
-    //         assert.equal(event.id.toNumber(), postCount.toNumber(), 'id is correct')
-    //         assert.equal(event.content, 'This is my first post', 'content is correct')
-    //         assert.equal(event.tipAmount, '1000000000000000000', 'Tip amount is correct')
-    //         assert.equal(event.author, author, 'Author is correct')
-            
-    //         // Check that author received funds
-    //         let newAuthorBalance
-    //         newAuthorBalance = await web3.eth.getBalance(author)
-    //         newAuthorBalance = new web3.utils.BN(newAuthorBalance)
-
-    //         let tipAmount
-    //         tipAmount = web3.utils.toWei('1','Ether')
-    //         tipAmount = new web3.utils.BN(tipAmount)
-
-    //         const expectedBalance = oldAuthorBalance.add(tipAmount)
-
-    //         assert.equal(newAuthorBalance.toString(), expectedBalance.toString())
-
-    //         // FAILURE: Tries to tip a post that does not exist
-    //         await socialNetwork.tipPost(99, { from: tipper, value: web3.utils.toWei('1','Ether')}).should.be.rejected;
-
-    //     })
-
-    // })
 })
